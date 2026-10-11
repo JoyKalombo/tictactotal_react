@@ -4,11 +4,19 @@ A React number-based noughts-and-crosses game for two people. Play online from s
 
 ## Rules
 
-Players alternate placing unused numbers 1–9 into a 3×3 grid. A complete row, column or diagonal totalling 16 wins for Player 1; 14 wins for Player 2. Ownership of numbers does not matter. If a move creates both totals, the result is a draw. A full board without either total also draws. Online rematches require both players to agree and alternate who starts.
+Choose a number set before starting a game:
+
+| Number set | Player 1 target | Player 2 target |
+| --- | --- | --- |
+| Standard: 1–9 | 16 | 14 |
+| Positive & negative: −4 through 4, including zero | 1 | −1 |
+| Counting in tens: 10, 20, …, 90 | 160 | 140 |
+
+All sets work online, on one device and against every computer difficulty. The online host chooses the set; joining players inherit it. Rematches keep it. Players alternate placing unused numbers into a 3×3 grid. A complete row, column or diagonal matching a player’s target wins for that player. Ownership of numbers does not matter. If a move creates both totals, the result is a draw. A full board without either total also draws. Online rematches require both players to agree and alternate who starts.
 
 ## Computer opponent
 
-Choose Easy, Medium or Hard on the home screen. You aim for 16; the computer aims for 14. Easy chooses random legal moves. Medium searches up to two moves ahead; Hard searches up to four with a larger work budget. Both search levels take immediate wins, weigh threats and avoid gifting the opposing target. Hard is challenging, but not guaranteed unbeatable. Search runs in a Web Worker; leaving the game cancels pending moves. Solo rematches alternate the starting player. Solo play needs no multiplayer server once the page is loaded.
+Choose Easy, Medium or Hard on the home screen. You aim for Player 1’s target; the computer aims for Player 2’s target in the chosen number set. Easy chooses random legal moves. Medium searches up to two moves ahead; Hard searches up to four with a larger work budget. Both search levels take immediate wins, weigh threats and avoid gifting the opposing target. Hard is challenging, but not guaranteed unbeatable. Search runs in a Web Worker; leaving the game cancels pending moves. Solo rematches alternate the starting player. Solo play needs no multiplayer server once the page is loaded.
 
 ## Run locally
 

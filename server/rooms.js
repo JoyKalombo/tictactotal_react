@@ -2,11 +2,11 @@ import {randomBytes} from 'node:crypto';
 import {newGame,move,nextRound} from '../game/logic.js';
 export class Rooms {
   rooms=new Map();
-  create(name) {
+  create(name,variant='standard') {
     if(this.rooms.size>=500) throw Error('Rooms are busy. Please try again later.');
     let code;do{code=randomBytes(3).toString('hex').toUpperCase()}while(this.rooms.has(code));
     const token=randomBytes(24).toString('hex');
-    const room={code,players:[{name:this.name(name),token,connections:new Set()},null],game:newGame(),rematch:[],updated:Date.now()};
+    const room={code,players:[{name:this.name(name),token,connections:new Set()},null],game:newGame(1,variant),rematch:[],updated:Date.now()};
     this.rooms.set(code,room);return {room,player:1,token};
   }
   name(value){return typeof value==='string'?value.trim().slice(0,24)||'Player':'Player';}

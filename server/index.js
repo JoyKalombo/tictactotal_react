@@ -21,7 +21,7 @@ io.on('connection',socket=>{
     membership=m;m.room.players[m.player-1].connections.add(socket.id);socket.join(m.room.code);m.room.updated=Date.now();broadcast(m.room);
     return {code:m.room.code,player:m.player,token:m.token,state:rooms.view(m.room)};
   }
-  handler('create',d=>attach(rooms.create(d.name)));
+  handler('create',d=>attach(rooms.create(d.name,d.variant)));
   handler('join',d=>attach(rooms.join(d.code,d.name,d.token)));
   handler('move',d=>{if(!membership)throw Error('Join a room first.');rooms.play(membership.room,membership.player,d.index,d.number,d.round);broadcast(membership.room);});
   handler('rematch',()=>{if(!membership)throw Error('Join a room first.');rooms.rematch(membership.room,membership.player);broadcast(membership.room);});

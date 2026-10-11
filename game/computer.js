@@ -1,9 +1,9 @@
-import { evaluate, LINES, TARGETS } from './logic.js';
+import { evaluate, LINES, getVariant } from './logic.js';
 
-export function legalMoves(board) {
+export function legalMoves(board, variant='standard') {
   const used = new Set(board);
   return board.flatMap((cell, index) => cell === null
-    ? Array.from({length:9}, (_, i) => i + 1).filter(n => !used.has(n)).map(number => ({index, number}))
+    ? getVariant(variant).numbers.filter(n => !used.has(n)).map(number => ({index, number}))
     : []);
 }
 
@@ -13,28 +13,28 @@ function outcome(status, player, ply) {
   return status === `player${player}` ? 10000 - ply : -10000 + ply;
 }
 
-function potential(board, player) {
-  const available = Array.from({length:9}, (_, i) => i + 1).filter(n => !board.includes(n));
+function potential(board, player, variant) {
+  const available = getVariant(variant).numbers.filter(n => !board.includes(n));
   let score = 0;
   for (const line of LINES) {
     const values = line.map(i => board[i]);
     const blanks = values.filter(n => n === null).length;
     const sum = values.reduce((total, n) => total + (n ?? 0), 0);
-    if (blanks === 1 && available.includes(TARGETS[player] - sum)) score += 30;
-    if (blanks === 2 && available.some((a, i) => available.slice(i + 1).some(b => sum + a + b === TARGETS[player]))) score += 3;
+    if (blanks === 1 && available.includes(getVariant(variant).targets[player] - sum)) score += 30;
+    if (blanks === 2 && available.some((a, i) => available.slice(i + 1).some(b => sum + a + b === getVariant(variant).targets[player]))) score += 3;
   }
   return score;
 }
 
-function heuristic(board, player) {
-  return potential(board, player) - potential(board, 3 - player);
+function heuristic(board, player, variant) {
+  return potential(board, player, variant) - potential(board, 3 - player, variant);
 }
 
-function children(board, player, computer, ply) {
-  return legalMoves(board).map(action => {
+function children(board, player, computer, ply, variant) {
+  return legalMoves(board, variant).map(action => {
     const next = [...board]; next[action.index] = action.number;
-    const status = evaluate(next).status;
-    return {action, board:next, status, estimate:outcome(status, computer, ply) ?? heuristic(next, computer)};
+    const status = evaluate(next, variant).status;
+    return {action, board:next, status, estimate:outcome(status, computer, ply) ?? heuristic(next, computer, variant)};
   }).sort((a,b) => player === computer ? b.estimate - a.estimate : a.estimate - b.estimate);
 }
 
@@ -42,11 +42,12 @@ function children(board, player, computer, ply) {
 // The node budget bounds work; the browser runs this in a worker to keep controls responsive.
 export function chooseComputerMove(game, difficulty = 'medium', random = Math.random) {
   if (game.status !== 'playing') return null;
-  const actions = legalMoves(game.board);
+  const variant = game.variant;
+  const actions = legalMoves(game.board, variant);
   if (!actions.length) return null;
   if (difficulty === 'easy') return actions[Math.min(actions.length - 1, Math.floor(Math.max(0, random()) * actions.length))];
   const computer = game.turn;
-  const options = children(game.board, computer, computer, 1);
+  const options = children(game.board, computer, computer, 1, variant);
   const immediate = options.find(child => child.status === `player${computer}`);
   if (immediate) return immediate.action;
   let best = options[0].action;
@@ -58,9 +59,9 @@ export function chooseComputerMove(game, difficulty = 'medium', random = Math.ra
     if (++nodes > budget) throw exhausted;
     const terminal = outcome(status, computer, ply);
     if (terminal !== null) return terminal;
-    if (!depth) return heuristic(board, computer);
+    if (!depth) return heuristic(board, computer, variant);
     let value = turn === computer ? -Infinity : Infinity;
-    for (const child of children(board, turn, computer, ply + 1)) {
+    for (const child of children(board, turn, computer, ply + 1, variant)) {
       const score = search(child.board, child.status, 3 - turn, depth - 1, alpha, beta, ply + 1);
       if (turn === computer) { value = Math.max(value, score); alpha = Math.max(alpha, value); }
       else { value = Math.min(value, score); beta = Math.min(beta, value); }
