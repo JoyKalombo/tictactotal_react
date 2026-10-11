@@ -5,7 +5,31 @@ export const VARIANTS = {
   negatives: {name:'Positive & negative', range:'−4–4', numbers:[-4,-3,-2,-1,0,1,2,3,4], targets:{1:1,2:-1}},
   tens: {name:'Counting in tens', range:'10–90 in tens', numbers:[10,20,30,40,50,60,70,80,90], targets:{1:160,2:140}}
 };
+// Build two distinct-number triples, then fill a compact nine-number bank.
+// Only targets are accepted from clients; the server regenerates the bank.
+export function customVariant(first,second) {
+  if(!Number.isInteger(first)||!Number.isInteger(second)||Math.abs(first)>999||Math.abs(second)>999)
+    throw Error('Choose whole-number targets from −999 to 999.');
+  if(first===second) throw Error('Choose two different target totals.');
+  const numbers=new Set(),centres=[first,second].map(total=>Math.floor(total/3));
+  [first,second].forEach((total,i)=>{
+    const c=centres[i],remainder=total-3*c;
+    const triple=remainder===0?[c-1,c,c+1]:remainder===1?[c-1,c,c+2]:[c-1,c+1,c+2];
+    triple.forEach(n=>numbers.add(n));
+  });
+  for(let distance=0;numbers.size<9;distance++){
+    for(const c of centres)for(const n of [c-distance,c+distance])if(numbers.size<9)numbers.add(n);
+  }
+  const bank=[...numbers].sort((a,b)=>a-b);
+  return {name:'Custom targets',range:bank.join(', '),numbers:bank,targets:{1:first,2:second}};
+}
+const customCache=new WeakMap();
 export function getVariant(id='standard') {
+  if(id&&typeof id==='object'&&id.type==='custom') {
+    const first=id.targets?.[1],second=id.targets?.[2],cached=customCache.get(id);
+    if(cached&&cached.targets[1]===first&&cached.targets[2]===second)return cached;
+    const generated=customVariant(first,second);customCache.set(id,generated);return generated;
+  }
   if(!Object.hasOwn(VARIANTS,id)) throw Error('Choose a valid number set.');
   return VARIANTS[id];
 }
