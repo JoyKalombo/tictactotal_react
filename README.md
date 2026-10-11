@@ -14,6 +14,10 @@ Choose a number set before starting a game:
 
 All sets work online, on one device and against every computer difficulty. The online host chooses the set; joining players inherit it. Rematches keep it. Players alternate placing unused numbers into a 3×3 grid. A complete row, column or diagonal matching a player’s target wins for that player. Ownership of numbers does not matter. If a move creates both totals, the result is a draw. A full board without either total also draws. Online rematches require both players to agree and alternate who starts.
 
+## Custom targets
+
+Choose Custom in the number-set selector, then enter two different whole-number totals from −999 to 999. The generated preview contains nine distinct integers, including zero or negative numbers when needed. Both totals are guaranteed to be reachable by three distinct numbers; this does not guarantee a win against an opponent. The bank is deterministic and stays the same for rematches. Online hosts send their targets and the server generates the bank, so all players use the same rules.
+
 ## Computer opponent
 
 Choose Easy, Medium or Hard on the home screen. You aim for Player 1’s target; the computer aims for Player 2’s target in the chosen number set. Easy chooses random legal moves. Medium searches up to two moves ahead; Hard searches up to four with a larger work budget. Both search levels take immediate wins, weigh threats and avoid gifting the opposing target. Hard is challenging, but not guaranteed unbeatable. Search runs in a Web Worker; leaving the game cancels pending moves. Solo rematches alternate the starting player. Solo play needs no multiplayer server once the page is loaded.
