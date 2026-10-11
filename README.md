@@ -1,10 +1,14 @@
 # Tic Tac Total
 
-A React number-based noughts-and-crosses game for two people. Play online from separate devices with a six-character room code or invite link, or pass and play on the same device.
+A React number-based noughts-and-crosses game for two people. Play online from separate devices with a six-character room code or invite link, pass and play on the same device, or play solo against the computer.
 
 ## Rules
 
 Players alternate placing unused numbers 1–9 into a 3×3 grid. A complete row, column or diagonal totalling 16 wins for Player 1; 14 wins for Player 2. Ownership of numbers does not matter. If a move creates both totals, the result is a draw. A full board without either total also draws. Online rematches require both players to agree and alternate who starts.
+
+## Computer opponent
+
+Choose Easy, Medium or Hard on the home screen. You aim for 16; the computer aims for 14. Easy chooses random legal moves. Medium searches up to two moves ahead; Hard searches up to four with a larger work budget. Both search levels take immediate wins, weigh threats and avoid gifting the opposing target. Hard is challenging, but not guaranteed unbeatable. Search runs in a Web Worker; leaving the game cancels pending moves. Solo rematches alternate the starting player. Solo play needs no multiplayer server once the page is loaded.
 
 ## Run locally
 
@@ -37,6 +41,8 @@ Reconnect credentials remain in sessionStorage, separated by room, and are never
 
 - `src/main.jsx`: home screen, online session, board, number tray, rules and history.
 - `src/style.css`: responsive layout and visual styling.
+- `game/computer.js`: bounded alpha-beta search and difficulty selection.
+- `src/computer.worker.js`: background computer search.
 - `game/logic.js`: pure move validation and result evaluation shared by client/server.
 - `server/rooms.js`: room membership, reconnection, rematch and cleanup.
 - `server/index.js`: Express static hosting and Socket.IO event handlers.
