@@ -6,3 +6,5 @@
 select{display:block;width:100%;margin-top:8px;padding:12px;border:1px solid #ccdaeb;border-radius:10px;background:#fbfdff;color:var(--ink);font:inherit}.variant-help{font-size:12px!important;line-height:1.5}.number-bank button{min-width:0}
 
 .custom-options{padding:14px;background:#f1f6fc;border-radius:12px;margin:12px 0}.custom-targets{display:grid;grid-template-columns:1fr 1fr;gap:12px}.custom-targets input{min-width:0}.custom-options p{font-size:12px;line-height:1.5;margin:10px 0}.custom-bank{display:flex;flex-wrap:wrap;gap:6px}.custom-bank span{padding:5px 8px;background:white;border-radius:6px;font-weight:600}.number-bank button{font-size:clamp(10px,2vw,17px);padding-left:0;padding-right:0}
+
+.number-bank.wide-bank{grid-template-columns:repeat(3,1fr)}
