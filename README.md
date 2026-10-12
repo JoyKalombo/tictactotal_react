@@ -16,7 +16,9 @@ All sets work online, on one device and against every computer difficulty. The o
 
 ## Custom targets
 
-Choose Custom in the number-set selector, then enter two different whole-number totals from −999 to 999. The generated preview contains nine distinct integers, including zero or negative numbers when needed. Both totals are guaranteed to be reachable by three distinct numbers; this does not guarantee a win against an opponent. The bank is deterministic and stays the same for rematches. Online hosts send their targets and the server generates the bank, so all players use the same rules.
+Choose Custom in the number-set selector, then enter any two different whole-number totals from −999 to 999. The nine-number bank contains distinct integers. Both totals have exactly the same number of distinct three-number winning combinations, shown in the preview. This balances available combinations; turn order and strategy still matter.
+
+When possible, the generator uses the preset pattern (targets equal three times a centre, plus or minus one step), preserving eight combinations per player. Other target pairs use a deterministic bounded search that prefers more combinations and accepts only equal counts. A constructive fallback guarantees at least three combinations each. The search does not claim a globally maximal bank. Zero and negative numbers may be included. Rematches keep the bank. Online hosts send targets and the server derives and validates the same bank.
 
 ## Computer opponent
 
