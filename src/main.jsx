@@ -4,7 +4,9 @@ import {io} from 'socket.io-client';
 import {newGame,move,nextRound,VARIANTS,getVariant,customVariant} from '../game/logic.js';
 import {chooseComputerMove} from '../game/computer.js';
 import './style.css';
+import {useMusic} from './music.js';
 function App(){
+ const music=useMusic();
  const initialCode=new URLSearchParams(location.search).get('room')||'';
  const [mode,setMode]=useState('home'),[code,setCode]=useState(initialCode),[name,setName]=useState(''),[room,setRoom]=useState(null),[seat,setSeat]=useState(null),[game,setGame]=useState(newGame),[selected,setSelected]=useState(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[connected,setConnected]=useState(false),[notice,setNotice]=useState(''),[difficulty,setDifficulty]=useState('medium'),[variant,setVariant]=useState('standard'),[target1,setTarget1]=useState('25'),[target2,setTarget2]=useState('20');
  let customPreview=null,customError='';
@@ -73,7 +75,7 @@ function App(){
  const result=current?.status==='draw'?'A draw. Well played!':current?.status?.startsWith('player')?mode==='computer'&&current.status==='player1'&&!name.trim()?'You win!':`${players?.[Number(current.status.slice(-1))-1]?.name||'Player'} wins!`:null;
  let status=result|| (mode==='computer'?(game.turn===2?'Computer is thinking…':'Your turn'):mode==='online'&&!connected?'Reconnecting…':mode==='online'&&!both?room?.players[1]?'Your friend disconnected. Waiting for them…':'Waiting for your friend to join…':`${players?.[current?.turn-1]?.name || 'Player'}’s turn`);
  return <main>
-  <header><a href={location.pathname} onClick={e=>{e.preventDefault();home();}} className="brand"><span className="brand-icon">#</span>Tic Tac Total<span className="brand-dot">.</span></a><span className="top-note">A little grid. A big numbers battle.</span></header>
+  <header><a href={location.pathname} onClick={e=>{e.preventDefault();home();}} className="brand"><span className="brand-icon">#</span>Tic Tac Total<span className="brand-dot">.</span></a><div className="header-actions"><span className="top-note">A little grid. A big numbers battle.</span><button className="music-toggle" onClick={music.toggle} aria-pressed={music.enabled&&music.available} disabled={!music.available} aria-label={music.available?(music.enabled?'Turn background music off':'Turn background music on'):'Background music unavailable'} title="Gentle background music · starts after your first tap"><span aria-hidden="true">{music.enabled&&music.available?'♫':'♪'}</span> {music.available?(music.enabled?'Music on':'Music off'):'Music unavailable'}</button></div></header>
   {mode==='home'?<section className="welcome">
    {!setup?<>
     <div className="welcome-heading"><div className="eyebrow">A LITTLE GRID. A BIG NUMBERS BATTLE.</div><h1>How would you like to play?</h1><p>Choose your opponent, then your numbers.</p></div>

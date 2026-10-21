@@ -28,6 +28,10 @@ When possible, the generator uses the preset pattern (targets equal three times 
 
 Choose Easy, Medium or Hard after selecting computer play. You aim for Player 1’s target; the computer aims for Player 2’s target in the chosen number set. Easy chooses random legal moves. Medium searches up to two moves ahead; Hard searches up to four with a larger work budget. Both search levels take immediate wins, weigh threats and avoid gifting the opposing target. Hard is challenging, but not guaranteed unbeatable. Search runs in a Web Worker; leaving the game cancels pending moves. Solo rematches alternate the starting player. Solo play needs no multiplayer server once the page is loaded.
 
+## Background music
+
+A quiet original synthesised loop starts after a tap or keypress. The header’s Music on/off button is available throughout setup and play; the preference is stored on this browser. Music pauses while the tab is hidden. Web Audio generates the loop locally without third-party tracks or downloads. Browsers without Web Audio can still play the game.
+
 ## Run locally
 
 Requires Node.js 22 or newer.
