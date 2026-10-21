@@ -2,6 +2,10 @@
 
 A React number-based noughts-and-crosses game for two people. Play online from separate devices with a six-character room code or invite link, pass and play on the same device, or play solo against the computer.
 
+## Start a game
+
+The first screen shows all three play modes together, followed by a short How to play guide. Choose online, same-device or computer play first, then select Classic, −4 to 4, Tens or Custom totals. Computer difficulty appears only in computer setup. Online players can create a room or join one; invite links open the join screen directly and use the host’s settings.
+
 ## Rules
 
 Choose a number set before starting a game:
@@ -22,7 +26,7 @@ When possible, the generator uses the preset pattern (targets equal three times 
 
 ## Computer opponent
 
-Choose Easy, Medium or Hard on the home screen. You aim for Player 1’s target; the computer aims for Player 2’s target in the chosen number set. Easy chooses random legal moves. Medium searches up to two moves ahead; Hard searches up to four with a larger work budget. Both search levels take immediate wins, weigh threats and avoid gifting the opposing target. Hard is challenging, but not guaranteed unbeatable. Search runs in a Web Worker; leaving the game cancels pending moves. Solo rematches alternate the starting player. Solo play needs no multiplayer server once the page is loaded.
+Choose Easy, Medium or Hard after selecting computer play. You aim for Player 1’s target; the computer aims for Player 2’s target in the chosen number set. Easy chooses random legal moves. Medium searches up to two moves ahead; Hard searches up to four with a larger work budget. Both search levels take immediate wins, weigh threats and avoid gifting the opposing target. Hard is challenging, but not guaranteed unbeatable. Search runs in a Web Worker; leaving the game cancels pending moves. Solo rematches alternate the starting player. Solo play needs no multiplayer server once the page is loaded.
 
 ## Run locally
 
